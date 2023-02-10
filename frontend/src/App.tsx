@@ -13,6 +13,8 @@ const App = () => {
         <Container>
           <Route path="/" component={Homescreen} exact />
           <Route path="/product/:id" component={Productscreen} />
+          {/* <Route path="/login" component={LoginScreen} />
+          <Route path="/register" component={RegisterScreen} /> */}
         </Container>
       </main>
       <Footer />

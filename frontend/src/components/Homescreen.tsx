@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import Product from "./Product";
-import axios from "axios";
+import {useDispatch, useSelector} from "react-redux"
+import { listProducts } from "../actions/productActions";
+import { Dispatch } from "@reduxjs/toolkit";
 
 export interface IProducts {
   _id: string;
@@ -13,17 +15,13 @@ export interface IProducts {
 }
 
 const Homescreen = () => {
-  const [products, setProducts] = useState<IProducts[]>([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await axios.get("/api/products");
+    dispatch(listProducts())
+  }, [dispatch] );
 
-      setProducts(data);
-    };
-
-    fetchProducts();
-  }, []);
+  const products = []
   return (
     <>
       <h1>Latest Products</h1>
