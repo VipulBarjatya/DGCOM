@@ -2,7 +2,15 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { userModel } from "../model/userModel";
 
-const verify = (req: Request, res: Response, next: NextFunction) => {
+interface AuthenticatedRequest extends Request {
+  user?: any;
+}
+
+const verify = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const authHeader =
     <string>req.headers["auth"] || <string>req.headers["authorization"];
 
@@ -14,8 +22,7 @@ const verify = (req: Request, res: Response, next: NextFunction) => {
         process.env.ACCESS_TOKEN_SECRET
       ) as jwt.JwtPayload;
       console.log(decoded);
-      // req.[user] = await userModel.findById(decoded.id).select("-password");
-      req.body["id"] = decoded.id;
+      req.user = await userModel.findById(decoded.id).select("-password");
       next();
     }
   } catch (error) {
@@ -24,4 +31,17 @@ const verify = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default verify;
+const isAdmin = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.user && req.user.isAdmin) {
+    console.log(req.user);
+    next();
+  } else {
+    res.status(401).json({ message: "Not authorized as admin!" });
+  }
+};
+
+export { verify, isAdmin };

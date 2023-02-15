@@ -1,7 +1,7 @@
 import mongoose, { Schema, model, Types, ObjectId } from "mongoose";
 
 interface IProduct {
-  user: ObjectId;
+  // user: ObjectId;
   name: string;
   image: string;
   brand: string;
@@ -13,11 +13,11 @@ interface IProduct {
 
 const productSchema = new Schema<IProduct>(
   {
-    user: {
-      type: Types.ObjectId,
-      required: true,
-      ref: "userSchema",
-    },
+    // user: {
+    //   type: Types.ObjectId,
+    //   required: true,
+    //   ref: "userSchema",
+    // },
     name: {
       type: String,
       required: true,

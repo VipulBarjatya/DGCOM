@@ -21,3 +21,29 @@ export const getProductById = async (req: Request, res: Response) => {
     res.status(404).send("Product not found");
   }
 };
+
+// @desc     add product
+// @route    post    /api/products/new
+// @access   Private/ Admin
+export const addNewProduct = async (req: Request, res: Response) => {
+  const product = await productModel.create(req.body);
+
+  if (product) {
+    res.json({ message: "Product added successfully" });
+  } else {
+    res.status(404).send("Product not found");
+  }
+};
+
+// @desc     delete product
+// @route    post    /api/products/:id
+// @access   Private/ Admin
+export const removeProduct = async (req: Request, res: Response) => {
+  const product = await productModel.findByIdAndDelete(req.params.id);
+
+  if (product) {
+    res.json(product);
+  } else {
+    res.status(404).send("Product not found");
+  }
+};

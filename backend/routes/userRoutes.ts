@@ -4,11 +4,13 @@ import {
   authUser,
   getUserProfile,
   registerUser,
+  getUsers,
 } from "../controllers/userController";
-import verify from "../middleware/authMiddleware";
+import { verify, isAdmin } from "../middleware/authMiddleware";
 
 router.post("/signup", registerUser);
 router.post("/login", authUser);
 router.get("/profile", verify, getUserProfile);
+router.get("/", verify, isAdmin, getUsers);
 
 export default router;
